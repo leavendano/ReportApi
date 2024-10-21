@@ -1,7 +1,5 @@
 using System.Data;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Reporting.NETCore;
 using Newtonsoft.Json;
@@ -25,10 +23,13 @@ app.MapPost("/report", ([FromBody] JsonElement request) => {
             report.LoadReportDefinition(reportFile);
             var nameFile = request.GetProperty("name").GetString();
             var typeReport = request.GetProperty("type").GetString();
-            //var data = request.GetProperty("dataSource").GetRawText();
-            foreach(var dataset in request.GetProperty("dataSource").EnumerateObject()) {
-                DataTable? dataTable = (DataTable?)JsonConvert.DeserializeObject(dataset.Value.GetRawText(), (typeof(DataTable)));
-                report.DataSources.Add(new ReportDataSource(dataset.Name, dataTable));
+            //var data = request.GetProperty("dataSource");
+            //IEnumerable<DataSetDTO>? dataItems =  data.Deserialize<IEnumerable<DataSetDTO>>();
+            foreach(var dataset in request.GetProperty("dataSource").EnumerateArray()) {
+                var collectionData = dataset.GetProperty("DataCollection").GetRawText();    
+                var name = dataset.GetProperty("Name").GetString();
+                DataTable? dataTable = (DataTable?)JsonConvert.DeserializeObject(collectionData, (typeof(DataTable)));
+                report.DataSources.Add(new ReportDataSource(name, dataTable));
             }
             JsonElement parametersElement;
             if(request.TryGetProperty("parameters",out parametersElement))
