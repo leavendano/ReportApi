@@ -92,3 +92,4 @@
 /home/lavenda/Projects/ReportApi/obj/Debug/net8.0/ReportApi.genruntimeconfig.cache
 /home/lavenda/Projects/ReportApi/obj/Debug/net8.0/ref/ReportApi.dll
 /home/lavenda/Projects/ReportApi/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/lavenda/Projects/ReportApi/obj/Debug/net8.0/ReportApi.sourcelink.json
